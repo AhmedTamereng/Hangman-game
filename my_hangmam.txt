@@ -1,0 +1,92 @@
+import random
+
+words = [ "palestine", "freedom", "egypt", "advanced", "anxity", "attitude",
+"component", "conclude", "army", "conflict", "dept", "defense", "element", "emerge",
+"employee", "wireless", "python"] 
+
+HANGMAN = [
+"_________________",
+"|  | ",
+"|  O ",
+"|  | ",
+"| /|\ ",
+"|  | ",
+"| / \ "]
+
+class Hangman:
+    def __init__(self):
+        
+        self.failed_attempts=0
+        self.word_to_guess =random.choice(words)
+        self.game_progress=['_' for letter in self.word_to_guess]
+       
+    def is_invalid_letter(self,user_input):
+         if len(user_input) !=  user_input.isalpha():
+            return True
+            
+            
+    
+    def word_index(self,user_input):
+        indexes=[]
+        for i, j in enumerate(list(self.word_to_guess)):
+            if j == user_input:
+                indexes.append(i)
+        return indexes     
+    
+    def Update_progress(self,idx,letter):
+        for num in idx:
+            self.game_progress[num]=letter
+    
+   
+    def game_status(self,user_input):
+        if user_input in self.word_to_guess:
+            i=self.word_index(user_input)
+            self.Update_progress(i,user_input)
+            [print(i) for i in HANGMAN[0:self.failed_attempts]]
+            print("\n \n " ,abs(7-self.failed_attempts) ,"lives left")
+            display=' '.join(self.game_progress) 
+            print("\n")
+            print(f'The word is: {display}')
+        
+        elif self.is_invalid_letter(user_input) == True:
+            print (" \n Please enter  letter.")
+            
+        else: 
+             self.failed_attempts+=1
+             [print(i) for i in HANGMAN[0:self.failed_attempts]]
+             print("\n \n " ,abs(7-self.failed_attempts) ,"lives left") 
+             display=' '.join(self.game_progress) 
+             print("\n")
+             print(f'The word is: {display}')
+             
+    def check_for_win(self):
+        display=''.join(self.game_progress)
+        word=self.word_to_guess
+        if display==word:
+            return True  
+
+
+    def user_Input(self):
+        user_input =input("\n \n Guess a letter :")
+        return user_input
+        
+def play():
+     
+     print("WELCAME TO HANDMAN GAME \n \n ")
+     word=Hangman()        
+     while True :
+        
+        guess = word.user_Input()
+        word.is_invalid_letter(guess)
+        word.game_status(guess)
+      
+        if word.check_for_win() and word.failed_attempts<=6:
+          
+            print("\n_____________YOU WIN________________")
+            break
+        elif word.failed_attempts>6:
+            print("\n_____________YOU LOST_______________")
+            break
+  
+play()          
+ 
